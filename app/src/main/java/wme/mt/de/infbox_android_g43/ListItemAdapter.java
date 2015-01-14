@@ -71,8 +71,7 @@ public class ListItemAdapter extends BaseAdapter {
 
             holder.title.setText(temp.getFilename());
             holder.size.setText(humanReadableByteCount(temp.getMetadata().getSize(),true));
-          //  holder.size.setText("blagdfgdfgdf");
-            holder.date.setText(temp.getMetadata().getCreation_date());
+            holder.date.setText(Helper.readableDate(temp.getMetadata().getCreation_date()));
             holder.thumb.setImageResource(R.drawable.amsterdam_prev);
         }
 

@@ -51,7 +51,7 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
     public void handleResult(String result) {
         try {
             ArrayList<Item> items = (ArrayList<Item>)InfboxDataConverter.getInfboxItemList(result);
-            listItemAdapter.getItems().addAll(items);
+     listItemAdapter.getItems().addAll(items);
         } catch (Exception e){
             e.printStackTrace();
         }

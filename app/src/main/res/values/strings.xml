@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">inf_box</string>
+    <string name="activity_title">inf_box</string>
+    <string name="app_info">inf_box Android-App\nÜbung WME 2014 | 2015</string>
+    <string name="inf_box_logo_desc">inf_box logo, a closed box an the text inf_box</string>
+    <string name="student_one_info">Heiko Ritter, s7960715</string>
+    <string name="student_two_info">Matthes Lipke, s6530394</string>
+    <string name="action_info">Info</string>
+    <string name="email">Email</string>
+    <string name="password">Passwort</string>
+    <string name="register">Registrieren</string>
+    <string name="login">Login</string>
+    <string name="full_name">Vorname Nachname</string>
+    <string name="edit_email">Geben Sie eine E-Mail-Adresse ein</string>
+    <string name="edit_password">Passwort eingeben</string>
+    <string name="edit_full_name">Vorname Nachname</string>
+    <string name="accept_conditions">Ich akzeptiere die </string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+</resources>

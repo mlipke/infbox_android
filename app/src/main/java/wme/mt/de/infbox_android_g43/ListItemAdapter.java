@@ -2,7 +2,6 @@ package wme.mt.de.infbox_android_g43;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,7 @@ public class ListItemAdapter extends BaseAdapter {
 
     Item temp = null;
 
-    public ListItemAdapter(Activity a, ArrayList itemsList, Resources res){
+    public ListItemAdapter(Activity a, ArrayList itemsList){
         activity = a;
         items = itemsList;
 
@@ -78,6 +77,10 @@ public class ListItemAdapter extends BaseAdapter {
         }
 
         return v;
+    }
+
+    public ArrayList getItems() {
+        return items;
     }
 
     public static String humanReadableByteCount(long bytes, boolean si) {

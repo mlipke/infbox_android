@@ -27,6 +27,9 @@ public class DetailActivity extends Activity {
         size.setText(intent.getExtras().getString("size"));
         date.setText(intent.getExtras().getString("date"));
 
+        imageView.setTag(intent.getExtras().getString("url"));
 
+        DownloadImageTask dit = new DownloadImageTask(imageView);
+        dit.execute(intent.getExtras().getString("url"));
     }
 }

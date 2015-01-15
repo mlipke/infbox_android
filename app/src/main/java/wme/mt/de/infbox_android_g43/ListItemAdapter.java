@@ -3,6 +3,9 @@ package wme.mt.de.infbox_android_g43;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,20 +15,26 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.mt.wme.inf_box_lib.misc.IInfboxResultHandler;
 import de.mt.wme.inf_box_lib.objects.Item;
 
 public class ListItemAdapter extends BaseAdapter {
-    private Activity activity;
+    private LruCache<String, Bitmap> thumbCache;
     private ArrayList items;
+
     private static LayoutInflater inflater = null;
 
-    Item temp = null;
-
     public ListItemAdapter(Activity a, ArrayList itemsList){
-        activity = a;
         items = itemsList;
 
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        thumbCache = new LruCache<String, Bitmap>(1024*1024*3){
+            @Override
+            protected int sizeOf(String key, Bitmap value){
+                return value.getByteCount() / 1024;
+            }
+        };
     }
 
     public int getCount(){
@@ -66,19 +75,27 @@ public class ListItemAdapter extends BaseAdapter {
         }
 
         if (items.size() > 0){
-            temp = null;
-            temp = (Item)items.get(index);
+            Item temp = (Item)items.get(index);
 
             holder.title.setText(temp.getFilename());
             holder.size.setText(humanReadableByteCount(temp.getMetadata().getSize(),true));
             holder.date.setText(Helper.readableDate(temp.getMetadata().getCreation_date()));
-            holder.thumb.setImageResource(R.drawable.amsterdam_prev);
+
+            String thumbUrl = Helper.getThumbnailUrlString(temp.getId());
+            holder.thumb.setTag(thumbUrl);
+
+            if (thumbCache.get(thumbUrl) == null) {
+                DownloadImageTask dit = new DownloadImageTask(holder.thumb, thumbCache);
+                dit.execute(thumbUrl);
+            } else {
+                holder.thumb.setImageBitmap(thumbCache.get(thumbUrl));
+            }
         }
 
         return v;
     }
 
-    public ArrayList getItems() {
+    public ArrayList<Item> getItems() {
         return items;
     }
 

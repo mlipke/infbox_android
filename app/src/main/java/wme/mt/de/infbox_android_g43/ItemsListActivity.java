@@ -16,8 +16,6 @@ import de.mt.wme.inf_box_lib.objects.Item;
 
 
 public class ItemsListActivity extends ListActivity implements IInfboxResultHandler {
-    private static String BASE_URL = "http://wme.lehre.imld.de:8080/wme14-15/api/";
-
     private ListItemAdapter listItemAdapter;
 
     @Override
@@ -31,7 +29,7 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
 
         InfboxTask task = new InfboxTask();
         task.setResultHandler(this);
-        task.execute(BASE_URL + "users/1/items", null);
+        task.execute(Helper.BASE_URL + "users/1/items", null);
     }
 
     @Override
@@ -51,12 +49,11 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
     public void handleResult(String result) {
         try {
             ArrayList<Item> items = (ArrayList<Item>)InfboxDataConverter.getInfboxItemList(result);
-     listItemAdapter.getItems().addAll(items);
+            listItemAdapter.getItems().addAll(items);
         } catch (Exception e){
             e.printStackTrace();
         }
 
         listItemAdapter.notifyDataSetChanged();
-        Log.v("Infbox", "notify");
     }
 }

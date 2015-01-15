@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Helper {
+    public static String BASE_URL = "http://wme.lehre.imld.de:8080/wme14-15/api/";
+
     public static String humanReadableByteCount(long bytes, boolean si) {
         int unit = si ? 1000 : 1024;
         if (bytes < unit) return bytes + " B";
@@ -26,5 +28,9 @@ public class Helper {
         }
 
         return output.format(date.getTime());
+    }
+
+    public static String getThumbnailUrlString(int id){
+        return BASE_URL + "items/" + id + "/thumbnail";
     }
 }

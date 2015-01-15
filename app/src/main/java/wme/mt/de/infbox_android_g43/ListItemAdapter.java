@@ -2,10 +2,7 @@ package wme.mt.de.infbox_android_g43;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +13,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import de.mt.wme.inf_box_lib.misc.IInfboxResultHandler;
 import de.mt.wme.inf_box_lib.objects.Item;
 
 public class ListItemAdapter extends BaseAdapter {
@@ -102,7 +98,7 @@ public class ListItemAdapter extends BaseAdapter {
 
     private void fetchThumbnail(String url, ViewHolder holder){
         if (thumbCache.get(url) == null) {
-            DownloadImageTask dit = new DownloadImageTask(holder.thumb, thumbCache);
+            CachedDownloadImageTask dit = new CachedDownloadImageTask(holder.thumb, thumbCache);
             dit.execute(url);
         } else {
             if (holder.thumb.getTag().equals(url)) {

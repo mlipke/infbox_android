@@ -4,17 +4,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.LruCache;
 import android.widget.ImageView;
 
 import java.io.InputStream;
 
-public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+public class CachedDownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    private LruCache<String, Bitmap> cache;
     ImageView mImage;
 
     String url_tag;
 
-    public DownloadImageTask(ImageView bmImage) {
+    public CachedDownloadImageTask(ImageView bmImage, LruCache<String, Bitmap> cache) {
         this.mImage = bmImage;
+        this.cache = cache;
 
         mImage.setImageResource(R.drawable.loading);
     }
@@ -48,6 +51,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
         if (tag.equals(url_tag)) {
             mImage.setImageBitmap(result);
+            cache.put(url_tag, result);
         } else {
             // set error image
             mImage.setImageResource(R.drawable.ic_img_failure);

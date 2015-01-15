@@ -27,5 +27,6 @@ public class DetailActivity extends Activity {
         size.setText(intent.getExtras().getString("size"));
         date.setText(intent.getExtras().getString("date"));
 
+
     }
 }

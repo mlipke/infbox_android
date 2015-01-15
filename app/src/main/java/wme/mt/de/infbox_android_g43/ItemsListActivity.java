@@ -35,14 +35,14 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Item item = (Item)getListAdapter().getItem(position);
-        Intent intent = new Intent(this, DetailActivity.class);
 
-        intent.putExtra("url", item.getFile_url());
-        intent.putExtra("title", item.getFilename());
-        intent.putExtra("date", item.getMetadata().getCreation_date());
-        intent.putExtra("size", Helper.humanReadableByteCount(item.getMetadata().getSize(), true));
+        String mimetype = item.getMetadata().getMimetype();
 
-        startActivity(intent);
+        if (mimetype.equals("image/jpeg")){
+            startImageDetailActivity(item);
+        } else if (mimetype.equals("txt/plain")){
+            startTextDetailActivity(item);
+        }
     }
 
     @Override
@@ -55,5 +55,27 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
         }
 
         listItemAdapter.notifyDataSetChanged();
+    }
+
+    private void startImageDetailActivity(Item item){
+        Intent intent = new Intent(this, DetailActivity.class);
+
+        intent.putExtra("url", item.getFile_url());
+        intent.putExtra("title", item.getFilename());
+        intent.putExtra("date", item.getMetadata().getCreation_date());
+        intent.putExtra("size", Helper.humanReadableByteCount(item.getMetadata().getSize(), true));
+
+        startActivity(intent);
+    }
+
+    private void startTextDetailActivity(Item item){
+        Intent intent = new Intent(this, TextDetailActivity.class);
+
+        intent.putExtra("url", item.getFile_url());
+        intent.putExtra("title", item.getFilename());
+        intent.putExtra("date", item.getMetadata().getCreation_date());
+        intent.putExtra("size", Helper.humanReadableByteCount(item.getMetadata().getSize(), true));
+
+        startActivity(intent);
     }
 }

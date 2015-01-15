@@ -7,9 +7,6 @@
     android:gravity="center_vertical"
     tools:context="wme.mt.de.infbox_android_g43.DetailActivity">
 
-   <!-- <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />-->
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,38 +15,11 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"/>
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="fill_parent"
+    <include
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/detailView"
-        android:layout_alignWithParentIfMissing="true"
-        android:gravity="center_vertical"
-        android:textSize="16sp"
-        android:layout_marginTop="6dip" />
+        layout="@layout/metadata_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/detailView"/>
 
-    <TextView
-        android:id="@+id/size"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:ellipsize="marquee"
-        android:singleLine="true"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/size"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:ellipsize="marquee"
-        android:singleLine="true"
-        android:textSize="12sp"
-        android:layout_marginBottom="6dip" />
 </RelativeLayout>

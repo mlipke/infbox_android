@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,17 +79,17 @@ public class ListItemAdapter extends BaseAdapter {
             Item temp = (Item)items.get(index);
 
             holder.title.setText(temp.getFilename());
-            holder.size.setText(humanReadableByteCount(temp.getMetadata().getSize(),true));
+            holder.size.setText(Helper.humanReadableByteCount(temp.getMetadata().getSize(), true));
             holder.date.setText(Helper.readableDate(temp.getMetadata().getCreation_date()));
 
-            String thumbUrl = Helper.getThumbnailUrlString(temp.getId());
-            holder.thumb.setTag(thumbUrl);
+            if (temp.getMetadata().isThumbnail_available()){
+                String thumbUrl = Helper.getThumbnailUrlString(temp.getId());
+                holder.thumb.setTag(thumbUrl);
+                holder.thumb.setVisibility(View.VISIBLE);
 
-            if (thumbCache.get(thumbUrl) == null) {
-                DownloadImageTask dit = new DownloadImageTask(holder.thumb, thumbCache);
-                dit.execute(thumbUrl);
+                fetchThumbnail(thumbUrl, holder);
             } else {
-                holder.thumb.setImageBitmap(thumbCache.get(thumbUrl));
+                holder.thumb.setVisibility(View.GONE);
             }
         }
 
@@ -99,11 +100,14 @@ public class ListItemAdapter extends BaseAdapter {
         return items;
     }
 
-    public static String humanReadableByteCount(long bytes, boolean si) {
-        int unit = si ? 1000 : 1024;
-        if (bytes < unit) return bytes + " B";
-        int exp = (int) (Math.log(bytes) / Math.log(unit));
-        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
-        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+    private void fetchThumbnail(String url, ViewHolder holder){
+        if (thumbCache.get(url) == null) {
+            DownloadImageTask dit = new DownloadImageTask(holder.thumb, thumbCache);
+            dit.execute(url);
+        } else {
+            if (holder.thumb.getTag().equals(url)) {
+                holder.thumb.setImageBitmap(thumbCache.get(url));
+            }
+        }
     }
 }

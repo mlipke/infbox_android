@@ -34,9 +34,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             e.printStackTrace();
         }
 
-        if (bitmap != null)
-            cache.put(url_tag, bitmap);
-
         return bitmap;
     }
 
@@ -51,8 +48,10 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             // set error image
             mImage.setImageResource(R.drawable.ic_img_failure);
         }
+
         if (tag.equals(url_tag)) {
             mImage.setImageBitmap(result);
+            cache.put(url_tag, result);
         } else {
             // set error image
             mImage.setImageResource(R.drawable.ic_img_failure);

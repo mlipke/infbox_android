@@ -82,6 +82,7 @@ public class ListItemAdapter extends BaseAdapter {
                 String thumbUrl = Helper.getThumbnailUrlString(temp.getId());
                 holder.thumb.setTag(thumbUrl);
                 holder.thumb.setVisibility(View.VISIBLE);
+                holder.thumb.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                 fetchThumbnail(thumbUrl, holder);
             } else {

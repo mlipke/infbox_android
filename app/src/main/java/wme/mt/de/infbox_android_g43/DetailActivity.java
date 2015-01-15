@@ -19,6 +19,7 @@ public class DetailActivity extends Activity {
         Intent intent = getIntent();
 
         ImageView imageView = (ImageView)findViewById(R.id.detailView);
+
         TextView title = (TextView)findViewById(R.id.title);
         TextView size = (TextView)findViewById(R.id.size);
         TextView date = (TextView)findViewById(R.id.date);
@@ -28,6 +29,7 @@ public class DetailActivity extends Activity {
         date.setText(intent.getExtras().getString("date"));
 
         imageView.setTag(intent.getExtras().getString("url"));
+        imageView.setScaleType(ImageView.ScaleType.CENTER);
 
         DownloadImageTask dit = new DownloadImageTask(imageView);
         dit.execute(intent.getExtras().getString("url"));

@@ -17,6 +17,7 @@ public class ListItem implements Item, ThumbnailHandler {
 
     private Metadata metadata;
 
+    private String thumbnailUrl;
     private LruCache<String, Bitmap> thumbnailCache;
     private ItemViewHolder holder;
 
@@ -74,8 +75,8 @@ public class ListItem implements Item, ThumbnailHandler {
             holder.thumbnail.setImageResource(R.drawable.ic_img_failure);
         }
 
-        if (tag.equals(url) && bitmap != null){
-            thumbnailCache.put(url, bitmap);
+        if (tag.equals(thumbnailUrl) && bitmap != null){
+            thumbnailCache.put(thumbnailUrl, bitmap);
             holder.thumbnail.setImageBitmap(bitmap);
         } else {
             holder.thumbnail.setImageResource(R.drawable.ic_img_failure);
@@ -108,21 +109,23 @@ public class ListItem implements Item, ThumbnailHandler {
             view = convertView;
         }
 
-        holder.thumbnail.setTag(url);
         holder.title.setText(Helper.cutString(filename));
         holder.size.setText(Helper.humanReadableByteCount(metadata.getSize(), true));
         holder.date.setText(Helper.readableDate(metadata.getCreation_date()));
 
         if (metadata.isThumbnail_available()) {
+            thumbnailUrl = Helper.getThumbnailUrlString(id);
+
+            holder.thumbnail.setTag(thumbnailUrl);
             holder.thumbnail.setVisibility(View.VISIBLE);
             holder.thumbnail.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            if (thumbnailCache.get(url) == null) {
+            if (thumbnailCache.get(thumbnailUrl) == null) {
                 DownloadImageTask dit = new DownloadImageTask(holder.thumbnail);
                 dit.setHandler(this);
-                dit.execute(url);
+                dit.execute(thumbnailUrl);
             } else {
-                holder.thumbnail.setImageBitmap(thumbnailCache.get(url));
+                holder.thumbnail.setImageBitmap(thumbnailCache.get(thumbnailUrl));
             }
         } else {
             holder.thumbnail.setVisibility(View.GONE);

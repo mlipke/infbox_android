@@ -3,6 +3,7 @@ package wme.mt.de.infbox_android_g43;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Helper {
@@ -40,5 +41,23 @@ public class Helper {
 
     public static String getThumbnailUrlString(int id){
         return BASE_URL + "items/" + id + "/thumbnail";
+    }
+
+    public static ArrayList<Item> convertItemList(ArrayList<de.mt.wme.inf_box_lib.objects.Item> itemList){
+        ArrayList<Item> out = new ArrayList<>();
+
+        for (int i = 0; i < itemList.size(); i++){
+            de.mt.wme.inf_box_lib.objects.Item inItem = itemList.get(i);
+            ListItem outItem = new ListItem();
+
+            outItem.setId(inItem.getId());
+            outItem.setFilename(inItem.getFilename());
+            outItem.setMetadata(inItem.getMetadata());
+            outItem.setUrl(inItem.getFile_url());
+
+            out.add(outItem);
+        }
+
+        return out;
     }
 }

@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import java.net.URL;
 
+import de.mt.wme.inf_box_lib.helper.ConnectionChecker;
+
 public class DetailActivity extends Activity {
 
     @Override
@@ -48,7 +50,9 @@ public class DetailActivity extends Activity {
 
         imageView.setTag(intent.getExtras().getString("url"));
 
-        DownloadImageTask dit = new DownloadImageTask(imageView);
-        dit.execute(intent.getExtras().getString("url"));
+        if (ConnectionChecker.isDeviceConnected(getApplicationContext())) {
+            DownloadImageTask dit = new DownloadImageTask(imageView);
+            dit.execute(intent.getExtras().getString("url"));
+        }
     }
 }

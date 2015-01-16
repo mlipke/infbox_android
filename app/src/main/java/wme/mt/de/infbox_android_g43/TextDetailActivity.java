@@ -6,6 +6,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import de.mt.wme.inf_box_lib.helper.ConnectionChecker;
+
 public class TextDetailActivity extends Activity {
 
     @Override
@@ -17,7 +19,9 @@ public class TextDetailActivity extends Activity {
         view.setTypeface(Typeface.MONOSPACE);
         Intent intent = getIntent();
 
-        DownloadTextTask dtt = new DownloadTextTask(view);
-        dtt.execute(intent.getExtras().getString("url"));
+        if (ConnectionChecker.isDeviceConnected(getApplicationContext())) {
+            DownloadTextTask dtt = new DownloadTextTask(view);
+            dtt.execute(intent.getExtras().getString("url"));
+        }
     }
 }

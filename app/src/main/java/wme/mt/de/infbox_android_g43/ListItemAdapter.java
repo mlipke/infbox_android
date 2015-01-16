@@ -13,18 +13,21 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.mt.wme.inf_box_lib.helper.ConnectionChecker;
 import de.mt.wme.inf_box_lib.objects.Item;
 
 public class ListItemAdapter extends BaseAdapter {
+    private Activity activity;
     private LruCache<String, Bitmap> thumbCache;
-    private ArrayList items;
+    private ArrayList<Item> items;
 
     private static LayoutInflater inflater = null;
 
-    public ListItemAdapter(Activity a, ArrayList itemsList){
+    public ListItemAdapter(Activity a, ArrayList<Item> itemsList){
+        activity = a;
         items = itemsList;
 
-        inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         thumbCache = new LruCache<String, Bitmap>(1024*1024*3){
             @Override
@@ -84,7 +87,9 @@ public class ListItemAdapter extends BaseAdapter {
                 holder.thumb.setVisibility(View.VISIBLE);
                 holder.thumb.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-                fetchThumbnail(thumbUrl, holder);
+                if (ConnectionChecker.isDeviceConnected(activity)) {
+                    fetchThumbnail(thumbUrl, holder);
+                }
             } else {
                 holder.thumb.setVisibility(View.GONE);
             }
@@ -99,8 +104,8 @@ public class ListItemAdapter extends BaseAdapter {
 
     private void fetchThumbnail(String url, ViewHolder holder){
         if (thumbCache.get(url) == null) {
-            CachedDownloadImageTask dit = new CachedDownloadImageTask(holder.thumb, thumbCache);
-            dit.execute(url);
+                CachedDownloadImageTask dit = new CachedDownloadImageTask(holder.thumb, thumbCache);
+                dit.execute(url);
         } else {
             if (holder.thumb.getTag().equals(url)) {
                 holder.thumb.setImageBitmap(thumbCache.get(url));

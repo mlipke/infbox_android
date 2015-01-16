@@ -30,6 +30,14 @@ public class Helper {
         return output.format(date.getTime());
     }
 
+    public static String cutString(String str){
+        if (str.length() > 26){
+            return str.substring(0, 16) + "(…)" + str.substring(str.length() - 4);
+        } else {
+            return str;
+        }
+    }
+
     public static String getThumbnailUrlString(int id){
         return BASE_URL + "items/" + id + "/thumbnail";
     }

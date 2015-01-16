@@ -77,7 +77,7 @@ public class ListItemAdapter extends BaseAdapter {
         if (items.size() > 0){
             Item temp = (Item)items.get(index);
 
-            holder.title.setText(temp.getFilename());
+            holder.title.setText(Helper.cutString(temp.getFilename()));
             holder.size.setText(Helper.humanReadableByteCount(temp.getMetadata().getSize(), true));
             holder.date.setText(Helper.readableDate(temp.getMetadata().getCreation_date()));
 

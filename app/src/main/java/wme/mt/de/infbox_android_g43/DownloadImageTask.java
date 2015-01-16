@@ -15,7 +15,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     public DownloadImageTask(ImageView bmImage) {
         this.mImage = bmImage;
-
+        mImage.setScaleType(ImageView.ScaleType.CENTER);
         mImage.setImageResource(R.drawable.loading);
     }
 
@@ -52,6 +52,8 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             // set error image
             mImage.setImageResource(R.drawable.ic_img_failure);
         }
+
+        mImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 
     }
 

@@ -40,12 +40,13 @@ public class DetailActivity extends Activity {
         TextView size = (TextView)findViewById(R.id.size);
         TextView date = (TextView)findViewById(R.id.date);
 
-        title.setText(intent.getExtras().getString("title"));
-        size.setText(intent.getExtras().getString("size"));
-        date.setText(intent.getExtras().getString("date"));
+        Bundle extras = intent.getExtras();
+
+        title.setText(extras.getString("title"));
+        size.setText(extras.getString("size"));
+        date.setText(Helper.readableDate(extras.getString("date")));
 
         imageView.setTag(intent.getExtras().getString("url"));
-        imageView.setScaleType(ImageView.ScaleType.CENTER);
 
         DownloadImageTask dit = new DownloadImageTask(imageView);
         dit.execute(intent.getExtras().getString("url"));

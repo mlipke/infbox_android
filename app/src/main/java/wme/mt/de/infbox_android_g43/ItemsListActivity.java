@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import de.mt.wme.inf_box_lib.helper.InfboxDataConverter;
 import de.mt.wme.inf_box_lib.helper.InfboxTask;
 import de.mt.wme.inf_box_lib.misc.IInfboxResultHandler;
-import de.mt.wme.inf_box_lib.objects.Item;
 
 
 public class ItemsListActivity extends ListActivity implements IInfboxResultHandler {
@@ -34,7 +33,7 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Item item = (Item)getListAdapter().getItem(position);
+        ListItem item = (ListItem)getListAdapter().getItem(position);
 
         String mimetype = item.getMetadata().getMimetype();
 
@@ -48,7 +47,7 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
     @Override
     public void handleResult(String result) {
         try {
-            ArrayList<Item> items = (ArrayList<Item>)InfboxDataConverter.getInfboxItemList(result);
+            ArrayList<Item> items = Helper.convertItemList((ArrayList<de.mt.wme.inf_box_lib.objects.Item>)InfboxDataConverter.getInfboxItemList(result));
             listItemAdapter.getItems().addAll(items);
         } catch (Exception e){
             e.printStackTrace();
@@ -57,10 +56,10 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
         listItemAdapter.notifyDataSetChanged();
     }
 
-    private void startImageDetailActivity(Item item){
+    private void startImageDetailActivity(ListItem item){
         Intent intent = new Intent(this, DetailActivity.class);
 
-        intent.putExtra("url", item.getFile_url());
+        intent.putExtra("url", item.getUrl());
         intent.putExtra("title", item.getFilename());
         intent.putExtra("date", item.getMetadata().getCreation_date());
         intent.putExtra("size", Helper.humanReadableByteCount(item.getMetadata().getSize(), true));
@@ -68,10 +67,10 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
         startActivity(intent);
     }
 
-    private void startTextDetailActivity(Item item){
+    private void startTextDetailActivity(ListItem item){
         Intent intent = new Intent(this, TextDetailActivity.class);
 
-        intent.putExtra("url", item.getFile_url());
+        intent.putExtra("url", item.getUrl());
         intent.putExtra("title", item.getFilename());
         intent.putExtra("date", item.getMetadata().getCreation_date());
         intent.putExtra("size", Helper.humanReadableByteCount(item.getMetadata().getSize(), true));

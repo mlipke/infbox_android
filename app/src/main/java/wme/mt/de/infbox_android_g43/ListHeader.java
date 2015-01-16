@@ -21,6 +21,10 @@ public class ListHeader implements Item {
         this.title = title;
     }
 
+    class ViewHolder {
+        TextView title;
+    }
+
     @Override
     public boolean isHeader() {
         return true;
@@ -32,12 +36,16 @@ public class ListHeader implements Item {
 
         if (convertView == null){
             view = inflater.inflate(R.layout.list_header_layout, null);
+
+            ViewHolder holder = new ViewHolder();
+
+            holder.title = (TextView)view.findViewById(R.id.header);
+            holder.title.setText(title);
+
+            view.setTag(holder);
         } else {
             view = convertView;
         }
-
-        TextView header = (TextView)view.findViewById(R.id.header);
-        header.setText(title);
 
         return view;
     }

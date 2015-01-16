@@ -54,29 +54,40 @@ public class ListItem implements Item {
         this.metadata = metadata;
     }
 
+    class ViewHolder {
+        ImageView thumbnail;
+        TextView title;
+        TextView size;
+        TextView date;
+    }
+
     @Override
     public View getView(LayoutInflater inflater, View convertView) {
         View view;
 
         if (convertView == null){
             view = inflater.inflate(R.layout.list_item_layout, null);
+
+            ViewHolder holder = new ViewHolder();
+
+            holder.thumbnail = (ImageView)view.findViewById(R.id.thumb);
+            holder.thumbnail.setTag(url);
+
+            DownloadImageTask dit = new DownloadImageTask(holder.thumbnail);
+            dit.execute(url);
+
+            holder.title = (TextView)view.findViewById(R.id.title);
+            holder.size = (TextView)view.findViewById(R.id.size);
+            holder.date = (TextView)view.findViewById(R.id.date);
+
+            holder.title.setText(Helper.cutString(filename));
+            holder.size.setText(Helper.humanReadableByteCount(metadata.getSize(), true));
+            holder.date.setText(Helper.readableDate(metadata.getCreation_date()));
+
+            view.setTag(holder);
         } else {
             view = convertView;
         }
-
-        ImageView imageView = (ImageView)view.findViewById(R.id.thumb);
-        imageView.setTag(url);
-
-        DownloadImageTask dit = new DownloadImageTask(imageView);
-        dit.execute(url);
-
-        TextView title = (TextView)view.findViewById(R.id.title);
-        TextView size = (TextView)view.findViewById(R.id.size);
-        TextView date = (TextView)view.findViewById(R.id.date);
-
-        title.setText(Helper.cutString(filename));
-        size.setText(Helper.humanReadableByteCount(metadata.getSize(), true));
-        date.setText(Helper.readableDate(metadata.getCreation_date()));
 
         return view;
     }

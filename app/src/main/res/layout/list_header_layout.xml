@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Test"
+        android:textColor="@color/inf_green"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginLeft="12dip"
+        android:layout_marginBottom="6dip"
+        android:layout_marginTop="6dip" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dip"
+        android:layout_below="@+id/header"
+        android:background="@color/inf_green" />
+
+</RelativeLayout>

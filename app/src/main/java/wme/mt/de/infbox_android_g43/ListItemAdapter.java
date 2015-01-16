@@ -14,7 +14,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import de.mt.wme.inf_box_lib.helper.ConnectionChecker;
-import de.mt.wme.inf_box_lib.objects.Item;
 
 public class ListItemAdapter extends BaseAdapter {
     private Activity activity;
@@ -49,60 +48,68 @@ public class ListItemAdapter extends BaseAdapter {
         return index;
     }
 
-    public static class ViewHolder {
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public static class ListItemViewHolder {
         public TextView title;
         public TextView size;
         public TextView date;
         public ImageView thumb;
     }
 
+    public static class ListHeaderViewHolder {
+        public TextView title;
+    }
+
     public View getView(int index, View convertView, ViewGroup parent){
         View v = convertView;
-        ViewHolder holder;
+        ListItemViewHolder livholder = new ListItemViewHolder();
+        ListHeaderViewHolder lhvholder = new ListHeaderViewHolder();
+        Item i = items.get(index);
+        ListItem temp = null;
+        ListHeader header = null;
 
         if (convertView == null){
-            v = inflater.inflate(R.layout.list_item_layout, null);
+            if (i.isHeader()){
+                v = inflater.inflate(R.layout.list_item_layout, null);
+                header = (ListHeader)i;
 
-            holder = new ViewHolder();
-            holder.title = (TextView)v.findViewById(R.id.title);
-            holder.size  = (TextView)v.findViewById(R.id.size);
-            holder.date  = (TextView)v.findViewById(R.id.date);
-            holder.thumb = (ImageView)v.findViewById(R.id.thumb);
+                lhvholder.title = (TextView)v.findViewById(R.id.header);
 
-            v.setTag(holder);
+                v.setTag(lhvholder);
+            } else {
+                v = inflater.inflate(R.layout.list_header_layout, null);
+                temp = (ListItem)i;
+
+                livholder.title = (TextView)v.findViewById(R.id.title);
+                livholder.size  = (TextView)v.findViewById(R.id.size);
+                livholder.date  = (TextView)v.findViewById(R.id.date);
+                livholder.thumb = (ImageView)v.findViewById(R.id.thumb);
+
+                v.setTag(livholder);
+            }
         } else {
-            holder = (ViewHolder)v.getTag();
+            if (i.isHeader()){
+                lhvholder = (ListHeaderViewHolder)v.getTag();
+            } else {
+                livholder = (ListItemViewHolder) v.getTag();
+            }
         }
 
         if (items.size() > 0){
-            Item temp = (Item)items.get(index);
-
-            holder.title.setText(temp.getFilename());
-            holder.size.setText(Helper.humanReadableByteCount(temp.getMetadata().getSize(), true));
-            holder.date.setText(Helper.readableDate(temp.getMetadata().getCreation_date()));
-
-            if (temp.getMetadata().isThumbnail_available()){
-                String thumbUrl = Helper.getThumbnailUrlString(temp.getId());
-                holder.thumb.setTag(thumbUrl);
-                holder.thumb.setVisibility(View.VISIBLE);
-                holder.thumb.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-                if (ConnectionChecker.isDeviceConnected(activity)) {
-                    fetchThumbnail(thumbUrl, holder);
-                }
+            if (i.isHeader()){
+                prepareListHeader(lhvholder, header);
             } else {
-                holder.thumb.setVisibility(View.GONE);
+                prepareListItem(livholder, temp);
             }
         }
 
         return v;
     }
 
-    public ArrayList<Item> getItems() {
-        return items;
-    }
-
-    private void fetchThumbnail(String url, ViewHolder holder){
+    private void fetchThumbnail(String url, ListItemViewHolder holder){
         if (thumbCache.get(url) == null) {
                 CachedDownloadImageTask dit = new CachedDownloadImageTask(holder.thumb, thumbCache);
                 dit.execute(url);
@@ -111,5 +118,28 @@ public class ListItemAdapter extends BaseAdapter {
                 holder.thumb.setImageBitmap(thumbCache.get(url));
             }
         }
+    }
+
+    private void prepareListItem(ListItemViewHolder holder, ListItem temp){
+        holder.title.setText(temp.getFilename());
+        holder.size.setText(Helper.humanReadableByteCount(temp.getMetadata().getSize(), true));
+        holder.date.setText(Helper.readableDate(temp.getMetadata().getCreation_date()));
+
+        if (temp.getMetadata().isThumbnail_available()){
+            String thumbUrl = Helper.getThumbnailUrlString(temp.getId());
+            holder.thumb.setTag(thumbUrl);
+            holder.thumb.setVisibility(View.VISIBLE);
+            holder.thumb.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+            if (ConnectionChecker.isDeviceConnected(activity)) {
+                fetchThumbnail(thumbUrl, holder);
+            }
+        } else {
+            holder.thumb.setVisibility(View.GONE);
+        }
+    }
+
+    private void prepareListHeader(ListHeaderViewHolder holder, ListHeader header){
+        holder.title.setText(header.getTitle());
     }
 }

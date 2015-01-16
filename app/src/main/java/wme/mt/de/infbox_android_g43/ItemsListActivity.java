@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.LruCache;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.SortedMap;
 
 import de.mt.wme.inf_box_lib.helper.InfboxDataConverter;
 import de.mt.wme.inf_box_lib.helper.InfboxTask;
@@ -23,6 +24,8 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
 
     private ArrayList<Item> items;
     private ArrayList<Item> sortedItems;
+
+    private boolean sorted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,24 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
         InfboxTask task = new InfboxTask();
         task.setResultHandler(this);
         task.execute(Helper.BASE_URL + "users/1/items", null);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_sort, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sort:
+                toggleSorting();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -59,10 +80,23 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
         try {
             items = Helper.convertItemList((ArrayList<de.mt.wme.inf_box_lib.objects.Item>)InfboxDataConverter.getInfboxItemList(result), thumbnailCache);
             sortedItems = Helper.insertHeaders(items);
-
-            listItemAdapter.getItems().addAll(sortedItems);
+            listItemAdapter.getItems().addAll(items);
         } catch (Exception e){
             e.printStackTrace();
+        }
+
+        listItemAdapter.notifyDataSetChanged();
+    }
+
+    private void toggleSorting(){
+        listItemAdapter.getItems().clear();
+
+        if (sorted){
+            listItemAdapter.getItems().addAll(items);
+            sorted = false;
+        } else {
+            listItemAdapter.getItems().addAll(sortedItems);
+            sorted = true;
         }
 
         listItemAdapter.notifyDataSetChanged();

@@ -63,4 +63,47 @@ public class Helper {
 
         return out;
     }
+
+    public static ArrayList<Item> insertHeaders(ArrayList<Item> items){
+        ArrayList<Item> res = new ArrayList<>();
+
+        ArrayList<Item> images = new ArrayList<>();
+        ArrayList<Item> audio = new ArrayList<>();
+        ArrayList<Item> video = new ArrayList<>();
+        ArrayList<Item> text = new ArrayList<>();
+
+        ListHeader i_header = new ListHeader("Bilder");
+        ListHeader a_header = new ListHeader("Audio");
+        ListHeader v_header = new ListHeader("Video");
+        ListHeader t_header = new ListHeader("Text");
+
+        images.add(i_header);
+        audio.add(a_header);
+        video.add(v_header);
+        text.add(t_header);
+
+        for (int i = 0; i < items.size(); i++){
+            ListItem temp = (ListItem)items.get(i);
+            switch (temp.getMetadata().getMimetype()){
+                case "audio/mpeg3":
+                    audio.add(temp);
+                    break;
+                case "image/jpeg":
+                    images.add(temp);
+                    break;
+                case "txt/plain":
+                    text.add(temp);
+                    break;
+                case "video/mp4":
+                    video.add(temp);
+            }
+        }
+
+        res.addAll(images);
+        res.addAll(text);
+        res.addAll(video);
+        res.addAll(audio);
+
+        return res;
+    }
 }

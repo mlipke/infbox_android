@@ -1,7 +1,6 @@
 package wme.mt.de.infbox_android_g43;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,8 +129,6 @@ public class ListItem implements Item, ImageHandler {
         } else {
             holder.thumbnail.setVisibility(View.GONE);
         }
-
-        Log.v("View", url);
 
         return view;
     }

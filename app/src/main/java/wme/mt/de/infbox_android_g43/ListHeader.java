@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 public class ListHeader implements Item {
     private String title;
+    private HeaderViewHolder holder;
 
     public ListHeader(){}
 
@@ -37,15 +38,17 @@ public class ListHeader implements Item {
         if (convertView == null){
             view = inflater.inflate(R.layout.list_header_layout, null);
 
-            HeaderViewHolder holder = new HeaderViewHolder();
+            holder = new HeaderViewHolder();
 
             holder.title = (TextView)view.findViewById(R.id.header);
-            holder.title.setText(title);
 
             view.setTag(holder);
         } else {
+            holder = (HeaderViewHolder)convertView.getTag();
             view = convertView;
         }
+
+        holder.title.setText(title);
 
         return view;
     }

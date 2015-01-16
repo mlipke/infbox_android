@@ -4,13 +4,13 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.LruCache;
 import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.SortedMap;
 
 import de.mt.wme.inf_box_lib.helper.InfboxDataConverter;
 import de.mt.wme.inf_box_lib.helper.InfboxTask;
@@ -21,6 +21,9 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
     private ListItemAdapter listItemAdapter;
     private LruCache<String, Bitmap> thumbnailCache;
 
+    private ArrayList<Item> items;
+    private ArrayList<Item> sortedItems;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,10 +31,7 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
 
         thumbnailCache = new LruCache<>(1024 * 1024 * 3);
 
-        ArrayList<Item> items = new ArrayList<>();
-
-        ListHeader header = new ListHeader("Items");
-        items.add(header);
+        items = new ArrayList<>();
 
         listItemAdapter = new ListItemAdapter(this, items);
         setListAdapter(listItemAdapter);
@@ -57,8 +57,10 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
     @Override
     public void handleResult(String result) {
         try {
-            ArrayList<Item> items = Helper.convertItemList((ArrayList<de.mt.wme.inf_box_lib.objects.Item>)InfboxDataConverter.getInfboxItemList(result), thumbnailCache);
-            listItemAdapter.getItems().addAll(items);
+            items = Helper.convertItemList((ArrayList<de.mt.wme.inf_box_lib.objects.Item>)InfboxDataConverter.getInfboxItemList(result), thumbnailCache);
+            sortedItems = Helper.insertHeaders(items);
+
+            listItemAdapter.getItems().addAll(sortedItems);
         } catch (Exception e){
             e.printStackTrace();
         }

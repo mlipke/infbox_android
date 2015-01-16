@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import de.mt.wme.inf_box_lib.objects.Metadata;
 
-public class ListItem implements Item, ThumbnailHandler {
+public class ListItem implements Item, ImageHandler {
     private int id;
     private String filename;
     private String url;

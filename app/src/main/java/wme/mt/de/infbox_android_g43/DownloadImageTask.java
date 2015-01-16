@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import java.io.InputStream;
 
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-    ThumbnailHandler handler;
+    ImageHandler handler;
 
     String url_tag;
 
@@ -39,7 +39,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         }
     }
 
-    public void setHandler(ThumbnailHandler handler){
+    public void setHandler(ImageHandler handler){
         this.handler = handler;
     }
 }

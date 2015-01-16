@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import de.mt.wme.inf_box_lib.helper.InfboxDataConverter;
 import de.mt.wme.inf_box_lib.helper.InfboxTask;

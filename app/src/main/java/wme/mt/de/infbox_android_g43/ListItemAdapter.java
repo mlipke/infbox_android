@@ -24,6 +24,20 @@ public class ListItemAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getViewTypeCount(){
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (items.get(position).isHeader())
+            return 0;
+        else {
+            return 1;
+        }
+    }
+
+    @Override
     public int getCount(){
         return items.size();
     }

@@ -21,7 +21,7 @@ public class ListHeader implements Item {
         this.title = title;
     }
 
-    class ViewHolder {
+    class HeaderViewHolder {
         TextView title;
     }
 
@@ -37,7 +37,7 @@ public class ListHeader implements Item {
         if (convertView == null){
             view = inflater.inflate(R.layout.list_header_layout, null);
 
-            ViewHolder holder = new ViewHolder();
+            HeaderViewHolder holder = new HeaderViewHolder();
 
             holder.title = (TextView)view.findViewById(R.id.header);
             holder.title.setText(title);

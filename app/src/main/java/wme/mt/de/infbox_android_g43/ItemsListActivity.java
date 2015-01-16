@@ -2,8 +2,10 @@ package wme.mt.de.infbox_android_g43;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.View;
 import android.widget.ListView;
 
@@ -16,13 +18,20 @@ import de.mt.wme.inf_box_lib.misc.IInfboxResultHandler;
 
 public class ItemsListActivity extends ListActivity implements IInfboxResultHandler {
     private ListItemAdapter listItemAdapter;
+    private LruCache<String, Bitmap> thumbnailCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_list);
 
+        thumbnailCache = new LruCache<>(1024 * 1024 * 3);
+
         ArrayList<Item> items = new ArrayList<>();
+
+        ListHeader header = new ListHeader("Items");
+        items.add(header);
+
         listItemAdapter = new ListItemAdapter(this, items);
         setListAdapter(listItemAdapter);
 
@@ -47,7 +56,7 @@ public class ItemsListActivity extends ListActivity implements IInfboxResultHand
     @Override
     public void handleResult(String result) {
         try {
-            ArrayList<Item> items = Helper.convertItemList((ArrayList<de.mt.wme.inf_box_lib.objects.Item>)InfboxDataConverter.getInfboxItemList(result));
+            ArrayList<Item> items = Helper.convertItemList((ArrayList<de.mt.wme.inf_box_lib.objects.Item>)InfboxDataConverter.getInfboxItemList(result), thumbnailCache);
             listItemAdapter.getItems().addAll(items);
         } catch (Exception e){
             e.printStackTrace();

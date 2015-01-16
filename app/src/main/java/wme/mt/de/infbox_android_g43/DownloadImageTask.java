@@ -9,13 +9,11 @@ import android.widget.ImageView;
 import java.io.InputStream;
 
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-    ImageView mImage;
+    ThumbnailHandler handler;
 
     String url_tag;
 
-    public DownloadImageTask(ImageView bmImage) {
-        this.mImage = bmImage;
-        mImage.setScaleType(ImageView.ScaleType.CENTER);
+    public DownloadImageTask(ImageView mImage) {
         mImage.setImageResource(R.drawable.loading);
     }
 
@@ -36,25 +34,12 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap result) {
-        String tag = "";
-        try {
-            tag = mImage.getTag().toString();
-        } catch (Exception e) {
-            // something went wrong
-            e.printStackTrace();
-            // set error image
-            mImage.setImageResource(R.drawable.ic_img_failure);
+        if (handler != null){
+            handler.handleResult(result);
         }
-
-        if (tag.equals(url_tag)) {
-            mImage.setImageBitmap(result);
-        } else {
-            // set error image
-            mImage.setImageResource(R.drawable.ic_img_failure);
-        }
-
-        mImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-
     }
 
+    public void setHandler(ThumbnailHandler handler){
+        this.handler = handler;
+    }
 }

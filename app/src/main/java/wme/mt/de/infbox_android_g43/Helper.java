@@ -1,5 +1,8 @@
 package wme.mt.de.infbox_android_g43;
 
+import android.graphics.Bitmap;
+import android.util.LruCache;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,12 +46,12 @@ public class Helper {
         return BASE_URL + "items/" + id + "/thumbnail";
     }
 
-    public static ArrayList<Item> convertItemList(ArrayList<de.mt.wme.inf_box_lib.objects.Item> itemList){
+    public static ArrayList<Item> convertItemList(ArrayList<de.mt.wme.inf_box_lib.objects.Item> itemList, LruCache<String, Bitmap> cache){
         ArrayList<Item> out = new ArrayList<>();
 
         for (int i = 0; i < itemList.size(); i++){
             de.mt.wme.inf_box_lib.objects.Item inItem = itemList.get(i);
-            ListItem outItem = new ListItem();
+            ListItem outItem = new ListItem(cache);
 
             outItem.setId(inItem.getId());
             outItem.setFilename(inItem.getFilename());

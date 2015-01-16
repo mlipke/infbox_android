@@ -1,6 +1,8 @@
 package wme.mt.de.infbox_android_g43;
 
 import android.graphics.Bitmap;
+import android.util.Log;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,14 +10,21 @@ import android.widget.TextView;
 
 import de.mt.wme.inf_box_lib.objects.Metadata;
 
-public class ListItem implements Item {
+public class ListItem implements Item, ThumbnailHandler {
     private int id;
     private String filename;
     private String url;
 
     private Metadata metadata;
 
+    private LruCache<String, Bitmap> thumbnailCache;
+    private ItemViewHolder holder;
+
     public ListItem(){}
+
+    public ListItem(LruCache<String, Bitmap> thumbnailCache){
+        this.thumbnailCache = thumbnailCache;
+    }
 
     public ListItem(String filename, String url){
         this.filename = filename;
@@ -54,7 +63,26 @@ public class ListItem implements Item {
         this.metadata = metadata;
     }
 
-    class ViewHolder {
+    @Override
+    public void handleResult(Bitmap bitmap) {
+        String tag = "";
+
+        try {
+            tag = holder.thumbnail.getTag().toString();
+        } catch (Exception e){
+            e.printStackTrace();
+            holder.thumbnail.setImageResource(R.drawable.ic_img_failure);
+        }
+
+        if (tag.equals(url) && bitmap != null){
+            thumbnailCache.put(url, bitmap);
+            holder.thumbnail.setImageBitmap(bitmap);
+        } else {
+            holder.thumbnail.setImageResource(R.drawable.ic_img_failure);
+        }
+    }
+
+    class ItemViewHolder {
         ImageView thumbnail;
         TextView title;
         TextView size;
@@ -64,30 +92,43 @@ public class ListItem implements Item {
     @Override
     public View getView(LayoutInflater inflater, View convertView) {
         View view;
+        holder = new ItemViewHolder();
 
         if (convertView == null){
             view = inflater.inflate(R.layout.list_item_layout, null);
 
-            ViewHolder holder = new ViewHolder();
-
             holder.thumbnail = (ImageView)view.findViewById(R.id.thumb);
-            holder.thumbnail.setTag(url);
-
-            DownloadImageTask dit = new DownloadImageTask(holder.thumbnail);
-            dit.execute(url);
-
             holder.title = (TextView)view.findViewById(R.id.title);
             holder.size = (TextView)view.findViewById(R.id.size);
             holder.date = (TextView)view.findViewById(R.id.date);
 
-            holder.title.setText(Helper.cutString(filename));
-            holder.size.setText(Helper.humanReadableByteCount(metadata.getSize(), true));
-            holder.date.setText(Helper.readableDate(metadata.getCreation_date()));
-
             view.setTag(holder);
         } else {
+            holder = (ItemViewHolder)convertView.getTag();
             view = convertView;
         }
+
+        holder.thumbnail.setTag(url);
+        holder.title.setText(Helper.cutString(filename));
+        holder.size.setText(Helper.humanReadableByteCount(metadata.getSize(), true));
+        holder.date.setText(Helper.readableDate(metadata.getCreation_date()));
+
+        if (metadata.isThumbnail_available()) {
+            holder.thumbnail.setVisibility(View.VISIBLE);
+            holder.thumbnail.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+            if (thumbnailCache.get(url) == null) {
+                DownloadImageTask dit = new DownloadImageTask(holder.thumbnail);
+                dit.setHandler(this);
+                dit.execute(url);
+            } else {
+                holder.thumbnail.setImageBitmap(thumbnailCache.get(url));
+            }
+        } else {
+            holder.thumbnail.setVisibility(View.GONE);
+        }
+
+        Log.v("View", url);
 
         return view;
     }

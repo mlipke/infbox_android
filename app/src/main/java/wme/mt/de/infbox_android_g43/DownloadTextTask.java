@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class DownloadTextTask extends AsyncTask<String, Void, String> {
     TextView textView;
@@ -41,8 +42,7 @@ public class DownloadTextTask extends AsyncTask<String, Void, String> {
         connection.setRequestProperty("Accept-Charset", "UTF-8");
         connection.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
 
-        Charset charset = Charset.forName("UTF-8");
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), charset));
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "ISO-8859-1"));
 
         String line;
         StringBuilder buffer = new StringBuilder();

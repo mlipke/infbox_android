@@ -1,8 +1,12 @@
 package wme.mt.de.infbox_android_g43;
 
+import android.graphics.Bitmap;
+import android.util.LruCache;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Helper {
@@ -40,5 +44,66 @@ public class Helper {
 
     public static String getThumbnailUrlString(int id){
         return BASE_URL + "items/" + id + "/thumbnail";
+    }
+
+    public static ArrayList<Item> convertItemList(ArrayList<de.mt.wme.inf_box_lib.objects.Item> itemList, LruCache<String, Bitmap> cache){
+        ArrayList<Item> out = new ArrayList<>();
+
+        for (int i = 0; i < itemList.size(); i++){
+            de.mt.wme.inf_box_lib.objects.Item inItem = itemList.get(i);
+            ListItem outItem = new ListItem(cache);
+
+            outItem.setId(inItem.getId());
+            outItem.setFilename(inItem.getFilename());
+            outItem.setMetadata(inItem.getMetadata());
+            outItem.setUrl(inItem.getFile_url());
+
+            out.add(outItem);
+        }
+
+        return out;
+    }
+
+    public static ArrayList<Item> insertHeaders(ArrayList<Item> items){
+        ArrayList<Item> res = new ArrayList<>();
+
+        ArrayList<Item> images = new ArrayList<>();
+        ArrayList<Item> audio = new ArrayList<>();
+        ArrayList<Item> video = new ArrayList<>();
+        ArrayList<Item> text = new ArrayList<>();
+
+        ListHeader i_header = new ListHeader("Bilder");
+        ListHeader a_header = new ListHeader("Audio");
+        ListHeader v_header = new ListHeader("Video");
+        ListHeader t_header = new ListHeader("Text");
+
+        images.add(i_header);
+        audio.add(a_header);
+        video.add(v_header);
+        text.add(t_header);
+
+        for (int i = 0; i < items.size(); i++){
+            ListItem temp = (ListItem)items.get(i);
+            switch (temp.getMetadata().getMimetype()){
+                case "audio/mpeg3":
+                    audio.add(temp);
+                    break;
+                case "image/jpeg":
+                    images.add(temp);
+                    break;
+                case "txt/plain":
+                    text.add(temp);
+                    break;
+                case "video/mp4":
+                    video.add(temp);
+            }
+        }
+
+        res.addAll(images);
+        res.addAll(text);
+        res.addAll(video);
+        res.addAll(audio);
+
+        return res;
     }
 }

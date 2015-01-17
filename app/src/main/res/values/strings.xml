@@ -8,6 +8,7 @@
     <string name="student_one_info">Heiko Ritter, s7960715</string>
     <string name="student_two_info">Matthes Lipke, s6530394</string>
     <string name="action_info">Info</string>
+    <string name="action_sort">Sortieren</string>
     <string name="email">Email</string>
     <string name="password">Passwort</string>
     <string name="register">Registrieren</string>

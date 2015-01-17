@@ -39,17 +39,6 @@ public class LoginActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
 
-
-
-
-
-
-
-
-
-
-
-
     }
 
     public void startRegisterActivity(View view){

@@ -46,7 +46,8 @@
         android:textSize="16sp"
         android:textColor="@android:color/white"
         android:textStyle="bold"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:onClick="startLoginActivity" />
 
     <CheckBox
         android:layout_width="wrap_content"

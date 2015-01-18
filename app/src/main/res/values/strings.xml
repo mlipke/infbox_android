@@ -20,5 +20,10 @@
     <string name="accept_conditions">Ich akzeptiere die </string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="input_name">Bitte geben Sie ihren Namen ein</string>
+    <string name="input_email">Bitte geben Sie ihre E-Mail-Adresse ein</string>
+    <string name="error_accept_tos">Sie müssen die Nutzungsbedingungen akzeptieren.</string>
+    <string name="error_valid_email">Bitte valide E-MailAdresse angeben!</string>
+    <string name="error_enter_name">Bitte geben Sie ihren Namen ein.</string>
 
 </resources>

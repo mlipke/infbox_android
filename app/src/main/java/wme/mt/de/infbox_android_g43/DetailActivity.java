@@ -6,19 +6,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.net.URL;
-
 import de.mt.wme.inf_box_lib.helper.ConnectionChecker;
 
+/*
+ Activity to display an image.
+ The image is downloaded from the inf_box server.
+ Images paramters (such as the URL) are passed in the intent that started the activity.
+ */
 public class DetailActivity extends Activity implements ImageHandler {
     Intent intent;
     ImageView imageView;
@@ -41,6 +42,9 @@ public class DetailActivity extends Activity implements ImageHandler {
         }
     }
 
+    /*
+     Wraps the inflated view in a ScrollView to display images larger the screen.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

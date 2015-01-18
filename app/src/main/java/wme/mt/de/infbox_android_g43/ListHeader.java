@@ -4,11 +4,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+/*
+ A header to be used to separate ListItems by category.
+ */
 public class ListHeader implements Item {
     private String title;
     private HeaderViewHolder holder;
-
-    public ListHeader(){}
 
     public ListHeader(String title){
         this.title = title;

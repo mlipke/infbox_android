@@ -1,16 +1,16 @@
 package wme.mt.de.infbox_android_g43;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
+/*
+ Task to download text files from the inf_box server.
+ */
 public class DownloadTextTask extends AsyncTask<String, Void, String> {
     TextView textView;
     String response;
@@ -42,6 +42,7 @@ public class DownloadTextTask extends AsyncTask<String, Void, String> {
         connection.setRequestProperty("Accept-Charset", "UTF-8");
         connection.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
 
+        // ISO-8859-1 to display umlaute correctly.
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "ISO-8859-1"));
 
         String line;
@@ -52,8 +53,6 @@ public class DownloadTextTask extends AsyncTask<String, Void, String> {
         }
 
         in.close();
-
-        Log.v("Url", ustring);
 
         response = buffer.toString();
     }

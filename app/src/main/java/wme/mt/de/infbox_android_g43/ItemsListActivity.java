@@ -17,7 +17,9 @@ import de.mt.wme.inf_box_lib.helper.InfboxDataConverter;
 import de.mt.wme.inf_box_lib.helper.InfboxTask;
 import de.mt.wme.inf_box_lib.misc.IInfboxResultHandler;
 
-
+/*
+ ListActivity that displays the items of a user.
+ */
 public class ItemsListActivity extends ListActivity implements IInfboxResultHandler {
     private ListItemAdapter listItemAdapter;
     private LruCache<String, Bitmap> thumbnailCache;

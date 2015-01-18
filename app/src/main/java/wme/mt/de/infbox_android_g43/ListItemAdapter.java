@@ -9,7 +9,9 @@ import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
 
-
+/*
+ Custom adapter to supprt Items in a ListView.
+ */
 public class ListItemAdapter extends BaseAdapter {
     private Activity activity;
     private ArrayList<Item> items;

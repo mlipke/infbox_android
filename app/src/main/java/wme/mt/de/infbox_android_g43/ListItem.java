@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import de.mt.wme.inf_box_lib.objects.Metadata;
 
+/*
+ ListItem to display a thumbnail and basic information about an Item in a ListView.
+ */
 public class ListItem implements Item, ImageHandler {
     private int id;
     private String filename;
@@ -20,15 +23,8 @@ public class ListItem implements Item, ImageHandler {
     private LruCache<String, Bitmap> thumbnailCache;
     private ItemViewHolder holder;
 
-    public ListItem(){}
-
     public ListItem(LruCache<String, Bitmap> thumbnailCache){
         this.thumbnailCache = thumbnailCache;
-    }
-
-    public ListItem(String filename, String url){
-        this.filename = filename;
-        this.url = url;
     }
 
     public int getId() {

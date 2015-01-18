@@ -25,5 +25,6 @@
     <string name="error_accept_tos">Sie müssen die Nutzungsbedingungen akzeptieren.</string>
     <string name="error_valid_email">Bitte valide E-MailAdresse angeben!</string>
     <string name="error_enter_name">Bitte geben Sie ihren Namen ein.</string>
+    <string name="error_blank_password">Bitte geben Sie ihr Passwort ein.</string>
 
 </resources>

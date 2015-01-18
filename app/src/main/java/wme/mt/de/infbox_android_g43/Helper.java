@@ -9,7 +9,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/*
+ Helper class containing functions used across multiple classes.
+ */
 public class Helper {
+    /*
+     URL of the inf_box API.
+     */
     public static String BASE_URL = "http://wme.lehre.imld.de:8080/wme14-15/api/";
 
     public static String humanReadableByteCount(long bytes, boolean si) {
@@ -34,6 +40,10 @@ public class Helper {
         return output.format(date.getTime());
     }
 
+    /*
+     If a string is longer than can be displayed, cut it short and substitute
+     an ellipsis.
+     */
     public static String cutString(String str){
         if (str.length() > 26){
             return str.substring(0, 16) + "(…)" + str.substring(str.length() - 4);
@@ -42,6 +52,9 @@ public class Helper {
         }
     }
 
+    /*
+     Generate the URL to get thumbnail images from the base URL and the image id.
+     */
     public static String getThumbnailUrlString(int id){
         return BASE_URL + "items/" + id + "/thumbnail";
     }
@@ -64,6 +77,10 @@ public class Helper {
         return out;
     }
 
+    /*
+     Separate an array of items into arrays of their respective categories with headers
+     and combine them again into a single array.
+     */
     public static ArrayList<Item> insertHeaders(ArrayList<Item> items){
         ArrayList<Item> res = new ArrayList<>();
 

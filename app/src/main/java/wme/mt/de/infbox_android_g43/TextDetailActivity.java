@@ -8,6 +8,10 @@ import android.widget.TextView;
 
 import de.mt.wme.inf_box_lib.helper.ConnectionChecker;
 
+/*
+ Activity to display a text file.
+ Starts a DownloadTextTask with an URL given as an extra in the intent
+ */
 public class TextDetailActivity extends Activity {
 
     @Override

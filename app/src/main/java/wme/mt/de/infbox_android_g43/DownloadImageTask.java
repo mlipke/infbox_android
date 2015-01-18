@@ -8,6 +8,9 @@ import android.widget.ImageView;
 
 import java.io.InputStream;
 
+/*
+ DownloadImageTask from inf_box_lib.
+ */
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ImageHandler handler;
 

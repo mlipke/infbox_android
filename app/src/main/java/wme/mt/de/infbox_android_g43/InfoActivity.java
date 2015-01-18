@@ -3,11 +3,9 @@ package wme.mt.de.infbox_android_g43;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Html;
-import android.widget.CheckBox;
-import android.widget.TextView;
-
-
+/*
+ Displays information about the App.
+ */
 public class InfoActivity extends Activity {
 
     @Override

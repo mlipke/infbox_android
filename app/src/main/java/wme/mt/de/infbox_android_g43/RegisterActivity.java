@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-
+/*
+ Displays a registration form for the inf_box service.
+ */
 public class RegisterActivity extends Activity {
 
     @Override
@@ -65,13 +67,14 @@ public class RegisterActivity extends Activity {
         final EditText name = (EditText)findViewById(R.id.editText);
         final CheckBox cbox = (CheckBox)findViewById(R.id.checkBox);
 
-        if((name.getText().toString().length() == 0)){
+        if ((name.getText().toString().length() == 0)){
             name.setError(getString(R.string.input_name));
-        }else if((email.getText().toString().length() == 0) || (is_Valid_Email(email) == false) ) {
+        } else if((email.getText().toString().length() == 0) || (is_Valid_Email(email) == false)) {
             email.setError(getString(R.string.input_email));
-        }else if(!cbox.isChecked()){
+        } else if(!cbox.isChecked()){
             cbox.setError(getString(R.string.error_accept_tos));
-        }else {
+        } else {
+            // close the current activity and go back to the login screen.
             finish();
         }
     }
@@ -79,11 +82,11 @@ public class RegisterActivity extends Activity {
 
     public boolean is_Valid_Email(EditText email){
         String valid_email;
-        if(email.getText().toString() == null){
+        if (email.getText().toString() == null){
             email.setError(getString(R.string.error_valid_email));
             valid_email = null;
             return false;
-        } else if( isEmailValid(email.getText().toString()) == false ) {
+        } else if(isEmailValid(email.getText().toString()) == false) {
             email.setError(getString(R.string.error_valid_email));
             valid_email = null;
             return false;
